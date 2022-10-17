@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <style>
+      * {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      p {
+        margin: 0;
+      }
+
+      span {
+        font-size: 14px;
+      }
+
+      button {
+        outline: none;
+        background-color: transparent;
+      }
+
+      body {
+        box-sizing: border-box;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: auto;
+        height: 100vh;
+        background-color: antiquewhite;
+      }
+
+      .chat-btn {
+        position: fixed;
+        background-color: transparent;
+        border: none;
+        right: 32px;
+        bottom: 32px;
+      }
+
+      .chat-btn img {
+        transition: width 250ms linear;
+        width: 60px;
+      }
+
+      .chat-btn img:hover {
+        transition: width 250ms linear;
+        width: 65px;
+      }
+
+      #chat-container {
+        position: fixed;
+        right: 32px;
+        bottom: 32px;
+      }
+
+      .show {
+        visibility: visible;
+        width: 375px;
+        height: calc(100% - 30px);
+        max-height: 625px;
+        z-index: 200;
+        opacity: 1;
+        transition: width 350ms ease 0s, height 350ms ease 0s;
+      }
+
+      .hider {
+        width: 80px;
+        height: 80px;
+        opacity: 0;
+        z-index: -1;
+        transition: width 350ms ease 0s, height 350ms ease 0s;
+      }
+
+      .chat-block {
+        height: 100%;
+      }
+
+      .chat-board {
+        background-color: #f5f5f5;
+        height: 100%;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px 0 #bdbdbd;
+      }
+
+      .chat-header-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 190px;
+        background-color: #c7cdc7;
+        text-align: center;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        color: white;
+      }
+
+      .chat-close-btn {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 15px;
+        display: flex;
+      }
+
+      .chat-close-btn button {
+        transition: background 250ms linear;
+        color: white;
+        cursor: pointer;
+        border: 0;
+        border-radius: 8px;
+        padding: 2px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: transparent;
+      }
+
+      .chat-close-btn button:hover {
+        transition: background 250ms linear;
+        background-color: #a0a0a0;
+      }
+
+      .chat-header-container img {
+        width: 130px;
+        height: 110px;
+      }
+
+      .chat-content-container {
+        padding: 35px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .chat-content-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        background-color: white;
+        padding: 12px;
+        border-radius: 8px;
+        box-shadow: 0 2px 0px 0 #cacaca;
+        border: none;
+      }
+
+      .chat-content-item span {
+        font-size: 2px;
+      }
+
+      .gray-img {
+        background-color: #c7cdc7;
+        width: 42px;
+        height: 42px;
+        border-radius: 4px;
+      }
+
+      .btn-black {
+        background-color: black !important;
+      }
+
+      .show span {
+        font-size: 14px;
+        transition: font-size 400ms ease 0s;
+      }
+
+      @media only screen and (max-width: 550px) {
+        #chat-container {
+          position: fixed;
+          right: 0px;
+          bottom: 0px;
+        }
+        .show {
+          visibility: visible;
+          width: 100vw;
+          height: 100vh;
+          max-height: none;
+          z-index: 200;
+          opacity: 1;
+          transition: width 450ms ease 0s, height 450ms ease 0s;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="chat-container" class="hider">
+      <div class="chat-block">
+        <div class="chat-board">
+          <div class="chat-header-container">
+            <div class="chat-close-btn">
+              <button id="btn-fechar" onclick="closeChat()">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  version="1.1"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  data-kt="minimizeChatIcon"
+                >
+                  <path fill="currentColor" d="M20,14H4V10H20"></path>
+                </svg>
+              </button>
+            </div>
+            <img src="src/ZRZS_LOGOS_08.png" alt="" />
+            <p>Precisando de uma ajudinha?</p>
+            <p>Selecione uma das opções abaixo</p>
+          </div>
+          <div class="chat-content-container">
+            <button
+              id="helper-01"
+              class="chat-content-item"
+              onclick="verifyItemClicked()"
+            >
+              <div class="gray-img"></div>
+              <span>Dúvidas frequentes</span>
+            </button>
+            <div id="helper-04" class="chat-content-item">
+              <div class="gray-img"></div>
+              <span>Fale com a gente pelo chat</span>
+            </div>
+            <div id="helper-03" class="chat-content-item">
+              <div class="gray-img"></div>
+              <span>Entre em contato pelo Whatsapp</span>
+            </div>
+            <div id="helper-05" class="chat-content-item">
+              <div class="gray-img"></div>
+              <span>Conheça nosso guia de rostos</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="chat-btn" onclick="openChat()">
+      <img src="src/chatIcon.png" alt="" />
+    </button>
+
+    <script>
+      // Cuida do carregamento do Kustomer
+      let isChatStarted = false;
+
+      window.addEventListener("kustomerLoaded", function () {
+        if (isChatStarted == true) {
+          Kustomer.start(
+            {
+              brandId: "634bb14071f16b7a1543ce86",
+              hideChatIcon: true,
+              preferredView: "chat",
+            },
+            async () => {
+              console.log("startei");
+            }
+          );
+        }
+      });
+
+      // Dynamically adds the SDK to the page.
+
+      function loadChatApi() {
+        var script = document.createElement("script");
+        script.src = "https://cdn.kustomerapp.com/chat-web/widget.js";
+        script.setAttribute(
+          "data-kustomer-api-key",
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNGJiMjA0NmE3NWJhNzRmODZmNmQ1YSIsInVzZXIiOiI2MzRiYjIwMzYwMjQ1Y2ZlNDBiOTA2ZDIiLCJvcmciOiI2MzRiYjEzY2U4MDI0MTJlYTg2MzhlZDkiLCJvcmdOYW1lIjoiZmVsaXBlLXMtY29tcGFueSIsInVzZXJUeXBlIjoibWFjaGluZSIsInBvZCI6InByb2QxIiwicm9sZXMiOlsib3JnIl0sImV4cCI6MTY2NjUwOTk1NCwiYXVkIjoidXJuOmNvbnN1bWVyIiwiaXNzIjoidXJuOmFwaSIsInN1YiI6IjYzNGJiMjAzNjAyNDVjZmU0MGI5MDZkMiJ9.t0529IhlmY4Igojuqd0eZWGHvMQHKE4oWwGRuSydUrQ"
+        );
+        window.document.body.appendChild(script);
+
+        isChatStarted = true;
+      }
+
+      loadChatApi();
+    </script>
+    <script>
+      const closeChat = () => {
+        const helperElement = document.querySelector("#chat-container");
+        helperElement.classList.remove("show");
+        helperElement.classList.add("hider");
+        Kustomer.close();
+      };
+
+      function openChat() {
+        const helperElement = document.querySelector("#chat-container");
+        helperElement.classList.remove("hider");
+        helperElement.classList.add("show");
+        console.log(helperElement);
+      }
+
+      function verifyItemClicked() {
+        Kustomer.open(() => {
+          Kustomer.getOpenConversations((conversations, error) => {
+            console.log(conversations);
+            if (conversations.length == 0) {
+              Kustomer.createConversation({}, function (response, error) {
+                if (error) {
+                  console.log(response);
+                  console.log("handle the error");
+                } else {
+                  console.log("handle the response");
+                }
+              });
+            }
+          });
+        });
+        const helperElement = document.querySelector("#chat-container");
+        helperElement.classList.remove("show");
+        helperElement.classList.add("hider");
+      }
+    </script>
+  </body>
+</html>
